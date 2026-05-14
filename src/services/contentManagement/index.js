@@ -27,7 +27,10 @@ export const editCmsContentApi = async (data) => {
     });
   }
 
-  return await axios.post(endPoint, reqData, setMultiPartHeader());
+  return await axios.post(endPoint, reqData, {
+    ...setMultiPartHeader(),
+    skipEncryption: true,
+  });
 };
 
 // ---------------------------------------add contennt
