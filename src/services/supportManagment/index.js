@@ -5,11 +5,11 @@ import {
 } from "../../config/axiosInstance";
 
 export const FaqListApi = async (data) => {
-  const endPoint = `api/admin/faq/list?${new URLSearchParams(data)}`;
+  const endPoint = `api/v1/admin/faq/list?${new URLSearchParams(data)}`;
   return await axios.get(endPoint, setJwtToken());
 };
 export const addFaqApi = async (data) => {
-  const endPoint = `api/admin/faq/add-update`;
+  const endPoint = `api/v1/admin/faq/add-update`;
 
   return await axios.post(
     endPoint,
@@ -23,7 +23,7 @@ export const addFaqApi = async (data) => {
 
 
 export const supportListApi = async (data) => {
-  const endPoint = `api/admin/support/list?${new URLSearchParams(data)}`;
+  const endPoint = `api/v1/admin/support/list?${new URLSearchParams(data)}`;
   return await axios.get(endPoint, setJwtToken());
 };
 
@@ -41,11 +41,11 @@ export const supportListApi = async (data) => {
 export const supportApi = async (data) => {
   console.log(data, "payload");
 
-  const endPoint = `api/admin/support/update-status`;
+  const endPoint = `api/v1/admin/support/update-status`;
 
   return axios.patch(
     endPoint,
-    data,              // ✅ send ticketId directly
+    data,              
     setJwtToken()
   );
 };
@@ -55,7 +55,7 @@ export const supportApi = async (data) => {
 
 export const deleteFaqApi = async (id) => {
    console.log(id)
-  const endPoint = `api/admin/faq/delete/${id}`;
+  const endPoint = `api/v1/admin/faq/delete/${id}`;
   //faq/delete?faqId
   return await axios.delete(endPoint, setJwtToken());
 };

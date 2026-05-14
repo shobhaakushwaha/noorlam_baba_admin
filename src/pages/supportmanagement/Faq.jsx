@@ -48,8 +48,10 @@ const Faq = ({ refresh, search }) => {
     try {
       const { data: response, status } = await FaqListApi(data);
       if (status === 200) {
-        setFaqList(response?.data?.data);
+        setFaqList(response?.data?.faqList);
         setTotal(response.data.total);
+              console.log("decrypted user list response:-->", response?.data);
+
         setCount(response?.counts);
       }
     } catch (error) {
@@ -151,8 +153,8 @@ const Faq = ({ refresh, search }) => {
 
             <div className="btm-content">
               <div className="short_content">
-                <b>{item?.title}</b>
-                <p>{item?.description}</p>
+                <b>{item?.question}</b>
+                <p>{item?.answer}</p>
               </div>
             </div>
           </div>

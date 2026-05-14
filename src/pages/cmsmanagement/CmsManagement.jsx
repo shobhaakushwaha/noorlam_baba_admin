@@ -16,6 +16,12 @@ import useFullPageLoader from "common/UseFullPageLoader";
 const CMS_TYPES = ["terms", "about", "privacy_policy"];
 
 const normalizeCmsType = (type) => {
+  const cmsType = String(type || "")
+    .trim()
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[\s-]+/g, "_");
+
   const typeMap = {
     policy: "privacy_policy",
     privacy: "privacy_policy",
@@ -24,10 +30,15 @@ const normalizeCmsType = (type) => {
     about: "about",
     terms_and_conditions: "terms",
     terms_conditions: "terms",
+    terms_condition: "terms",
     terms: "terms",
   };
 
-  return typeMap[String(type || "").trim()] || "";
+  return typeMap[cmsType] || "";
+};
+
+const getCmsTypeFromItem = (item) => {
+  return normalizeCmsType(item?.type) || normalizeCmsType(item?.title);
 };
 
 const doNameFormat = (name) => {
@@ -38,6 +49,16 @@ const doNameFormat = (name) => {
   };
 
   return nameObj[normalizeCmsType(name)] || "NA";
+};
+
+const getCmsTitle = (type) => {
+  const titleObj = {
+    terms: "terms_and_conditions",
+    about: "about",
+    privacy_policy: "privacy_policy",
+  };
+
+  return titleObj[normalizeCmsType(type)] || "";
 };
 
 const CmsManagement = () => {
@@ -73,6 +94,20 @@ const CmsManagement = () => {
     return Array.isArray(list) ? list : [];
   };
 
+  const getUniqueCmsListByType = (list) => {
+    const cmsByType = new Map();
+
+    list.forEach((item) => {
+      const cmsType = getCmsTypeFromItem(item);
+
+      if (cmsType && !cmsByType.has(cmsType)) {
+        cmsByType.set(cmsType, item);
+      }
+    });
+
+    return CMS_TYPES.map((cmsType) => cmsByType.get(cmsType)).filter(Boolean);
+  };
+
   // ------------------get api for data
 
   const getCMSList = async (type) => {
@@ -89,7 +124,7 @@ const CmsManagement = () => {
           : [],
       );
 
-      setCMSListData(list);
+      setCMSListData(getUniqueCmsListByType(list));
     } catch (error) {
       console.log("CMS list error:---->", error);
     } finally {
@@ -173,7 +208,7 @@ const EditContentMangement = ({
   useEffect(() => {
     if (inputDetails && Object.keys(inputDetails)?.length > 0) {
       setArticalInput(inputDetails?.content || inputDetails?.description || "");
-      setArticalTitle(normalizeCmsType(inputDetails?.type));
+      setArticalTitle(getCmsTypeFromItem(inputDetails));
     }
   }, [inputDetails]);
 
@@ -196,16 +231,21 @@ const EditContentMangement = ({
       errors.articalInput = "Artical can't be empty";
     }
 
+    if (!(normalizeCmsType(articalTitle) || getCmsTypeFromItem(inputDetails))) {
+      status = false;
+      errors.articalTitle = "CMS type is invalid";
+    }
+
     setError(errors);
     return status;
   };
 
   const doEditMyCMS = async () => {
     if (doValidation()) {
-      const type = normalizeCmsType(articalTitle);
+      const type = normalizeCmsType(articalTitle) || getCmsTypeFromItem(inputDetails);
       const reqQuery = {
         type,
-        title: inputDetails?.title || doNameFormat(type),
+        title: getCmsTitle(type) || inputDetails?.title,
         content: articalInput,
       };
 
@@ -214,10 +254,10 @@ const EditContentMangement = ({
           data: { status, message },
         } = await editCmsContentApi(reqQuery);
 
-        if (status === 200) {
+        if ([200, 201].includes(status)) {
           console.log("success  message:----------->", message);
           getCMSList();
-          toastMessage(message, "success", "Deleted-User");
+          toastMessage(message, "success", "Cms-Content");
           closeModel();
         }
       } catch (error) {
@@ -235,6 +275,11 @@ const EditContentMangement = ({
       <div className="inner_content">
         <div className="top-heading">
           <h2>{doNameFormat(articalTitle)}</h2>
+          {error?.articalTitle && (
+            <div style={{ color: "red" }}>
+              <p>{error?.articalTitle}</p>
+            </div>
+          )}
         </div>
         <div className="full_description">
           <JoditEditor

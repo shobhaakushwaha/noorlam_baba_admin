@@ -10,24 +10,24 @@ import {
 // -----------------cms api
 
 export const getCmsContentListApi = async (data) => {
-  const endPoint = `/api/admin/cms/list?${new URLSearchParams(data)}`;
+  const endPoint = `/api/v1/admin/cms/list?${new URLSearchParams(data)}`;
 
   return await axios.get(endPoint, setJwtToken());
 };
 
 export const editCmsContentApi = async (data) => {
-  const endPoint = `/api/admin/cms/add`;
-  const payload = data instanceof FormData ? data : new FormData();
+  const endPoint = `/api/v1/admin/cms/add`;
+  const reqData = data instanceof FormData ? data : new FormData();
 
   if (!(data instanceof FormData)) {
     Object.entries(data || {}).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
-        payload.append(key, value);
+        reqData.append(key, value);
       }
     });
   }
 
-  return await axios.post(endPoint, payload, setMultiPartHeader());
+  return await axios.post(endPoint, reqData, setMultiPartHeader());
 };
 
 // ---------------------------------------add contennt
