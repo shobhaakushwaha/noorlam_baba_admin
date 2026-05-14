@@ -17,7 +17,7 @@ import {
   TbPlayerTrackPrevFilled,
 } from "react-icons/tb";
 
-const Faq = ({ refresh, search }) => {
+const Faq = ({ refresh, search, faqType = "seller" }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editFaq, setEditFaq] = useState(null);
   const [total, setTotal] = useState(null);
@@ -42,13 +42,20 @@ const Faq = ({ refresh, search }) => {
     let data = {
       page: activePage,
       limit: limits,
+      type: faqType,
       search: debouncedValue,
     };
 
     try {
       const { data: response, status } = await FaqListApi(data);
       if (status === 200) {
-        setFaqList(response?.data?.faqList);
+        const list =
+          response?.data?.faqList ||
+          response?.data?.list ||
+          response?.data?.listing ||
+          response?.data;
+
+        setFaqList(Array.isArray(list) ? list : []);
         setTotal(response.data.total);
               console.log("decrypted user list response:-->", response?.data);
 
@@ -92,7 +99,7 @@ const Faq = ({ refresh, search }) => {
   // pagination / search changes
   useEffect(() => {
     listData();
-  }, [activePage, limits, debouncedValue]);
+  }, [activePage, limits, debouncedValue, faqType]);
 
   //  REFRESH AFTER ADD FAQ
   useEffect(() => {
@@ -105,7 +112,7 @@ const Faq = ({ refresh, search }) => {
   const urlInstance = new URLSearchParams(searchParams);
   urlInstance.set("page", 1);
   setSearchParams(urlInstance);
-}, [debouncedValue]);
+}, [debouncedValue, faqType]);
 
   const closeAndClear = () => {
     setFaqModalOpen(false);
@@ -203,6 +210,7 @@ const Faq = ({ refresh, search }) => {
   modalAdd={faqModalOpen}
   closeAndClear={closeAndClear}
   editFaq={editFaq}
+  faqType={faqType}
   onSuccess={listData}
 />
 

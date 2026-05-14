@@ -28,21 +28,23 @@ export const addBannertApi = async (data) => {
 export const changeStatusAPI = async (data) => {
   console.log(data, "changeStatusAPI");
 
-  const endPoint = `api/admin/banner/status/${data.userId}`;
+  const endPoint = `/api/v1/admin/banner/change_status`;
+  const payload = new FormData();
 
-  return axios.put(
-    endPoint,
-    { status: data.status }, // 👈 must be an object
-    setJwtToken()
-  );
+  payload.append("bannerId", data?.bannerId);
+  payload.append("status", String(data?.status));
+
+  return await axios.put(endPoint, payload, {
+    ...setMultiPartHeader(),
+    skipEncryption: true,
+  });
 };
 
 
 
 export const deleteBannerApi = async (id) => {
    console.log(id)
-  const endPoint = `/api/admin/banner/delete/${id}`;
+  const endPoint = `/api/v1/admin/banner/delete/${id}`;
   //faq/delete?faqId
   return await axios.delete(endPoint, setJwtToken());
 };
-

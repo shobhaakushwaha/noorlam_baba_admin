@@ -1,7 +1,7 @@
 import NotFound from "common/NotFound";
 import useFullPageLoader from "common/UseFullPageLoader";
 import useDebounce from "hooks/UseDebounce";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { supportApi, supportListApi } from "services/supportManagment";
 import { findSerialNumber } from "utils/formValidator";
@@ -17,7 +17,8 @@ import { IoClose } from "react-icons/io5";
 import ChatModal from "components/modals/ChatModal";
 import { toastMessage } from "utils/toastMessage";
 
-const Support = () => {
+const Support = ({ supportType}) => {
+    console.log(supportType,":::::::::::::::::::::::::::::::::::")
   const [search, setSearch] = useState("");
   const debouncedValue = useDebounce(search, 300);
 
@@ -38,32 +39,38 @@ const Support = () => {
   const [descriptionModal, setDescriptionModal] = useState(false);
   const [selectedDescription, setSelectedDescription] = useState("");
   const [selectedData, setSelectedData] = useState({});
+  const previousSupportType = useRef(supportType);
+    console.log("Support List Type:-->", supportType);
 
   // Handle pagination
   const handlePageChange = (event) => {
-    searchParams.set("page", event);
-    setSearchParams(searchParams);
+    const urlInstance = new URLSearchParams(searchParams);
+
+    urlInstance.set("page", event);
+    setSearchParams(urlInstance);
   };
 
   // handle limit of page
   const handleLimit = (event) => {
-    searchParams.set("limit", event.target.value);
-    searchParams.delete("page");
-    setSearchParams(searchParams);
+    const urlInstance = new URLSearchParams(searchParams);
+
+    urlInstance.set("limit", event.target.value);
+    urlInstance.delete("page");
+    setSearchParams(urlInstance);
   };
 
-  const listData = async () => {
+  const listData1 = async () => {
     let data = {
       page: activePage,
       limit: limits,
+    type: supportType,
     };
-
+console.log("Support List Payload:-->", data);
     try {
       const { data: response, status } = await supportListApi(data);
 
       if (status === 200) {
-        setFaqList(response?.data?.listing);
-        console.log(response?.data?.listing, " list");
+        setFaqList(response?.data?.listing || response?.data?.list || []);
         setTotal(response.data.total);
         setCount(response?.counts);
       }
@@ -71,7 +78,27 @@ const Support = () => {
       console.log(error);
     }
   };
+const listData = async () => {
+  let data = {
+    page: activePage,
+    limit: limits,
+    type: supportType,
+  };
 
+  console.log("Support List Payload:-->", data);
+
+  try {
+    const { data: response, status } = await supportListApi(data);
+
+    if (status === 200) {
+      setFaqList(response?.data?.listing || response?.data?.list || []);
+      setTotal(response.data.total);
+      setCount(response?.counts);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
   const resolveQuery = async () => {
     let data = {
       ticketId: selectedId,
@@ -90,8 +117,20 @@ const Support = () => {
   };
 
   useEffect(() => {
+    if (previousSupportType.current !== supportType) {
+      previousSupportType.current = supportType;
+
+      if (activePage !== 1) {
+        const urlInstance = new URLSearchParams(searchParams);
+
+        urlInstance.set("page", 1);
+        setSearchParams(urlInstance);
+        return;
+      }
+    }
+
     listData();
-  }, [activePage, limits]);
+  }, [activePage, limits, supportType]);
 
   return (
     <div className="wrapper_support">

@@ -8,6 +8,7 @@ import AddFaqModal from "./AddFaqModal";
 
 const SupportManagement = () => {
   const [search, setSearch] = useState("");
+  const [faqType, setFaqType] = useState("seller");
 
   const [dashboardTab, setDashboardTab] = useState("Approved");
   const [refreshFaq, setRefreshFaq] = useState(0);
@@ -15,13 +16,13 @@ const SupportManagement = () => {
   const [faqModalOpen, setFaqModalOpen] = useState(false);
 
   const handleReset = () => {
-  setSearch("");              // clear search
-  setRefreshFaq(Date.now());  // force reload
-};
+    setSearch("");
+    setRefreshFaq(Date.now());
+  };
 
-const closeAndClear = () => {
-  setFaqModalOpen(false);
-};
+  const closeAndClear = () => {
+    setFaqModalOpen(false);
+  };
 
   return (
     <div className="wrap_support_management">
@@ -45,44 +46,55 @@ const closeAndClear = () => {
         </div>
       </div>
 
-      {dashboardTab === "Approved" && (
-        <div className="wrapper_search">
-          <div className="wrap_search">
-            <Search
-  value={search}
-  onChange={(e) => setSearch(e.target.value)}
-/>
+      <div className="wrapper_search">
+        <div className="wrap_search">
+          {dashboardTab === "Approved" && (
+            <>
+              <Search
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
 
-            <Button onClick={handleReset}>
-  <FiRefreshCcw />
-</Button>
-
-          </div>
-
-          <Button
-            className="light_button"
-            onClick={() => setFaqModalOpen(true)}
-          >
-            + Add FAQ
-          </Button>
+              <Button onClick={handleReset}>
+                <FiRefreshCcw />
+              </Button>
+            </>
+          )}
         </div>
-      )}
 
-      {/* TAB CONTENT */}
-      {/* {dashboardTab === "Approved" && <Faq />} */}
+        <div className="support_toolbar_actions">
+          {dashboardTab === "Approved" && (
+            <Button
+              className="light_button"
+              onClick={() => setFaqModalOpen(true)}
+            >
+              + Add FAQ
+            </Button>
+          )}
+
+          <select
+            className="form-control"
+            value={faqType}
+            onChange={(e) => setFaqType(e.target.value)}
+          >
+            <option value="seller">Seller</option>
+            <option value="logistic">Logistic</option>
+            <option value="user">User</option>
+          </select>
+        </div>
+      </div>
+
       {dashboardTab === "Approved" && (
-  <Faq refresh={refreshFaq}  search={search} />
-)}
-      {dashboardTab === "Request" && <Support />}
+        <Faq refresh={refreshFaq} search={search} faqType={faqType} />
+      )}
+      {dashboardTab === "Request" && <Support supportType={faqType} />}
 
-      {/* Add Faq modal */}
-      {/* <AddFaqModal modalAdd={faqModalOpen} closeAndClear={closeAndClear} /> */}
-     <AddFaqModal
-  modalAdd={faqModalOpen}
-  closeAndClear={closeAndClear}
-  onSuccess={() => setRefreshFaq(Date.now())}
-/>
-
+      <AddFaqModal
+        modalAdd={faqModalOpen}
+        closeAndClear={closeAndClear}
+        faqType={faqType}
+        onSuccess={() => setRefreshFaq(Date.now())}
+      />
     </div>
   );
 };

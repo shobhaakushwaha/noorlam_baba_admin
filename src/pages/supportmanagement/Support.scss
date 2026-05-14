@@ -90,6 +90,34 @@
 }
 
 .wrap_support_management {
+  .wrapper_search {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+
+    .wrap_search {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1 1 280px;
+    }
+
+    .support_toolbar_actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      flex: 0 0 auto;
+
+      .form-control {
+        min-width: 150px;
+        height: 42px;
+      }
+    }
+  }
+
   .faq_wrapper {
     background-color: transparent;
     padding: 0;

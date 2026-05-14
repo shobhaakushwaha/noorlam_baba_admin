@@ -4,7 +4,13 @@ import React, { useEffect, useState } from "react";
 import { addFaqApi } from "services/supportManagment";
 import { toastMessage } from "utils/toastMessage";
 
-const AddFaqModal = ({ modalAdd, closeAndClear, onSuccess, editFaq }) => {
+const AddFaqModal = ({
+  modalAdd,
+  closeAndClear,
+  onSuccess,
+  editFaq,
+  faqType = "seller",
+}) => {
   const [isEdit, setIsEdit] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -45,7 +51,9 @@ const AddFaqModal = ({ modalAdd, closeAndClear, onSuccess, editFaq }) => {
     if (!validation()) return;
 
     const payload = {
-      ...formData,
+      question: formData.title,
+      answer: formData.description,
+      type: editFaq?.type || faqType,
       ...(isEdit && { faqId: editFaq?._id }),
     };
 
@@ -69,8 +77,8 @@ const AddFaqModal = ({ modalAdd, closeAndClear, onSuccess, editFaq }) => {
     if (editFaq) {
       setIsEdit(true);
       setFormData({
-        title: editFaq.title || "",
-        description: editFaq.description || "",
+        title: editFaq.question || editFaq.title || "",
+        description: editFaq.answer || editFaq.description || "",
       });
     } else {
       resetForm();

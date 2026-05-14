@@ -153,6 +153,11 @@ const encryptBodyRequest = (config) => {
 };
 
 const encryptRequest = (config) => {
+  if (config.skipEncryption) {
+    delete config.skipEncryption;
+    return config;
+  }
+
   if (!isEncryptionEnabled) return config;
 
   const method = config.method?.toLowerCase();

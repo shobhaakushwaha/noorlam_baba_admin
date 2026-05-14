@@ -74,16 +74,13 @@ const BannerManagement = () => {
     onShow();
 
     try {
-      const {
-        data: {
-          data: { data, total },
-          status,
-        },
-      } = await getBannerListApi(payload);
+      const response = await getBannerListApi(payload);
 
-      if (status === 200) {
-        setBannerData(data || []);
-        setTotal(total);
+      if (response?.status === 200) {
+        const bannerData = response?.data?.data;
+
+        setBannerData(bannerData?.bannerList || bannerData?.data || []);
+        setTotal(bannerData?.total || 0);
       }
     } catch (error) {
       console.log("error:-->", error);
@@ -122,13 +119,14 @@ const BannerManagement = () => {
   const handleConfirmStatus = async () => {
     if (!selectedUser?._id) return;
 
-    const newStatus = !selectedUser.status;
+    const currentStatus = selectedUser?.status ?? selectedUser?.isActive;
+    const newStatus = !currentStatus;
 
     onShow();
 
     try {
       const res = await changeStatusAPI({
-        userId: selectedUser._id,
+        bannerId: selectedUser._id,
         status: newStatus,
       });
 
@@ -156,7 +154,6 @@ const BannerManagement = () => {
     getBanner();
   }, [activePage, limits]);
 
-  console.log(bannerList, " list");
 
   const closeAndClear = () => {
     setModalAdd(false);
@@ -219,7 +216,7 @@ const BannerManagement = () => {
                   <td className="text-center">
                     {/* <SwitchButton /> */}
                     <SwitchButton
-                      status={data?.status}
+                      status={data?.status ?? data?.isActive}
                       onChange={() => logoutModalOpen(data)}
                     />
                   </td>
@@ -237,7 +234,7 @@ const BannerManagement = () => {
                 </tr>
               ))
             ) : (
-              <NotFound msg="User list not available" onHide={true} />
+              <NotFound msg="Banner list not available" onHide={true} />
             )}
           </tbody>
         </table>
