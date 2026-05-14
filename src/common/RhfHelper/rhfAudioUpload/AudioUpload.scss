@@ -1,0 +1,47 @@
+@use "/src/scss/variables.scss" as *;
+@use "/src/scss/mixin.scss" as *;
+
+.wrap_audio_cstm {
+  width: 100%;
+  margin-bottom: 2rem;
+  label {
+    border: 2px dashed #c4c4c4;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    cursor: pointer;
+    padding: 15px;
+
+    .wrap_left_side {
+      display: flex;
+      align-items: center;
+      input {
+        display: none;
+      }
+      img {
+        width: 50px;
+        height: 50px;
+        
+      }
+      .wrap_upload {
+        margin-left: 15px;
+        .upload_btn_cstm {
+          font-weight: 600;
+          font-size: 14px;
+          margin-bottom: 0.2rem;
+        }
+        span {
+          font-size: 12px;
+          color: #878787;
+        }
+      }
+    }
+    svg{
+        &.upload{
+            font-size: 22px;
+        }
+    }
+  }
+}

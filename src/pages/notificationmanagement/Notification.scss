@@ -1,0 +1,77 @@
+@use "/src/scss/variables.scss" as *;
+@use "/src/scss/mixin.scss" as *;
+
+
+.notifiaction_management{
+    .dashboard_title{
+        button{
+            &.button{
+                background-color: transparent;
+                border-color: $primary-color;
+                color: $primary-color;
+                &:hover{
+                    background-color: $primary-color;
+                    color: $white-color;
+                }
+            }
+        }
+    }
+    .sentNotification{
+            background-color: $white-color;
+            padding: 20px;
+            border-radius: 12px;
+
+        .title_cards{
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+            margin-bottom: 1.5rem;
+            
+            .top-content{
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 1.5rem;
+                .heading{
+                    max-width: 85%;
+                        width: 100%;
+                    h5{
+                        margin-bottom: 0;
+                    }
+
+                }
+                .hours{
+                    width: 15%;
+                        white-space: nowrap;
+                        text-align: end;
+                    img{
+                        width: 22px;
+
+                    }
+                    span{
+                        margin-left: 6px;
+                        font-size: 14px;
+
+                    }
+                }
+            }
+            .btm-content{
+                display: flex;
+                align-items: flex-end;
+                justify-content: space-between;
+                .short_content{
+                    max-width: 90%;
+                    width: 100%;
+                    
+                }
+                .dlt-icon{
+                        svg{
+                            cursor: pointer;
+                            color: red ;
+                            font-size: 16px;
+                        }
+                    }
+
+            }
+        }
+    }
+}

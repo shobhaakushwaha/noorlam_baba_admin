@@ -1,0 +1,500 @@
+@use "/src/scss/variables.scss" as *;
+@use "/src/scss/mixin.scss" as *;
+
+.auth_section {
+  min-height: 100vh;
+  background: #f8fafc;
+
+  .auth_content {
+    display: flex;
+    justify-content: center;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: calc(100vh - 80px);
+
+    .image_section {
+      width: 100%;
+      max-width: 48%;
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+
+      // Gradient overlay for premium look
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(27, 76, 255, 0.15) 0%,
+          rgba(79, 106, 255, 0.1) 50%,
+          rgba(147, 51, 234, 0.1) 100%
+        );
+        pointer-events: none;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 8s ease;
+      }
+
+      // Subtle floating animation
+      &:hover img {
+        transform: scale(1.03);
+      }
+
+      .banner_logo {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        width: 124px;
+        height: auto;
+        z-index: 2;
+      }
+
+      // Decorative elements
+      &::before {
+        content: '';
+        position: absolute;
+        bottom: -50px;
+        right: -50px;
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        border-radius: 50%;
+        z-index: 1;
+      }
+    }
+
+    .content_right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 15px auto;
+      padding: 40px;
+      width: 52%;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+      position: relative;
+
+      @include break-point(largeDesktop) {
+        width: 575px;
+      }
+
+      // Decorative background pattern
+      &::before {
+        content: '';
+        position: absolute;
+        top: 20%;
+        right: 10%;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(27, 76, 255, 0.03) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+      }
+
+      form {
+        width: 80%;
+        max-width: 420px;
+        position: relative;
+        z-index: 1;
+
+        @include break-point(largeDesktop) {
+          width: 90%;
+        }
+
+        &.fix_width {
+          width: 70%;
+        }
+      }
+
+      .form_title {
+        padding-bottom: 2rem;
+        text-align: center;
+        color: $title-color;
+
+        .lock_icon {
+          width: 80px;
+          height: 80px;
+          margin: 0 auto 25px;
+          background: linear-gradient(135deg, rgba(27, 76, 255, 0.1) 0%, rgba(79, 106, 255, 0.05) 100%);
+          border-radius: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          img {
+            width: 40px;
+            height: 40px;
+          }
+        }
+
+        img {
+          width: 100%;
+          max-width: 230px;
+          margin-bottom: 1rem;
+        }
+
+        p {
+          font-size: 1rem;
+          color: #6B7280;
+          margin-bottom: 8px;
+          font-weight: 500;
+          letter-spacing: 0.5px;
+
+          &.light_color {
+            font-size: 0.9375rem;
+            color: #9CA3AF;
+            line-height: 1.5;
+          }
+        }
+
+        h3 {
+          margin-bottom: 8px;
+          font-weight: 700;
+          color: #111827;
+          font-size: 1.75rem;
+          line-height: 1.3;
+          letter-spacing: -0.02em;
+
+          svg {
+            font-size: 20px;
+            color: #000;
+            transition: 0.4s;
+
+            &:hover {
+              color: $primary-color;
+            }
+          }
+        }
+      }
+
+      .content {
+        .form_field {
+          margin-bottom: 20px;
+
+          &.has_icon {
+            position: relative;
+
+            .input_icon {
+              position: absolute;
+              left: 18px;
+              top: 50%;
+              transform: translateY(-50%);
+              width: 20px;
+              height: 20px;
+              opacity: 0.5;
+              transition: opacity 0.3s ease;
+              z-index: 1;
+            }
+
+            input {
+              padding-left: 52px !important;
+            }
+
+            &:focus-within .input_icon {
+              opacity: 1;
+            }
+          }
+
+          &.password {
+            .password_icons {
+              position: absolute;
+              right: 18px;
+              top: 50%;
+              transform: translateY(-50%);
+              cursor: pointer;
+              color: #9CA3AF;
+              font-size: 20px;
+              transition: color 0.2s ease;
+              z-index: 1;
+
+              &:hover {
+                color: $primary-color;
+              }
+            }
+
+            input {
+              padding-right: 52px !important;
+            }
+          }
+
+          input {
+            width: 100%;
+            height: 56px;
+            padding: 16px 20px;
+            border: 2px solid #E5E7EB;
+            border-radius: 14px;
+            font-size: 1rem;
+            color: #111827;
+            background: #fff;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+
+            &::placeholder {
+              color: #9CA3AF;
+              font-weight: 400;
+            }
+
+            &:hover {
+              border-color: #D1D5DB;
+            }
+
+            &:focus {
+              outline: none;
+              border-color: $primary-color;
+              box-shadow: 0 0 0 4px rgba(27, 76, 255, 0.1);
+              background: #fff;
+            }
+          }
+
+          .validation_err {
+            margin-top: 8px;
+
+            p {
+              color: #EF4444;
+              font-size: 0.8125rem;
+              margin: 0;
+              display: flex;
+              align-items: center;
+              gap: 4px;
+
+              &::before {
+                content: '!';
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 16px;
+                height: 16px;
+                background: #FEE2E2;
+                color: #EF4444;
+                border-radius: 50%;
+                font-size: 10px;
+                font-weight: 700;
+              }
+            }
+          }
+        }
+      }
+
+      .reminder {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-top: -8px;
+        margin-bottom: 8px;
+
+        a {
+          color: $primary-color;
+          transition: all 0.2s ease;
+          font-size: 0.9375rem;
+          text-decoration: none;
+          font-weight: 500;
+
+          &:hover {
+            color: darken($primary-color, 10%);
+            text-decoration: underline;
+          }
+        }
+      }
+
+      h2 {
+        font-size: 2rem;
+        margin-bottom: 0.7rem;
+        color: $primary-color;
+
+        @include break-point(largeDesktop) {
+          font-size: 1.7rem;
+        }
+      }
+
+      .button_wrap {
+        padding-top: 24px;
+        display: block;
+        text-align: center;
+
+        a {
+          color: $black-color;
+          font-weight: 500;
+          margin-top: 10px;
+          text-decoration: underline;
+
+          &:hover {
+            color: $primary-color;
+          }
+        }
+      }
+
+      .login {
+        .button_wrap {
+          justify-content: space-between;
+        }
+      }
+
+      // Otp section
+      .otp_section {
+        .otp_wrap {
+          .form-control.is-invalid {
+            background-image: none;
+            padding: initial;
+          }
+        }
+
+        .resend_button {
+          padding: 25px 0;
+          display: flex;
+          justify-content: space-between;
+
+          P {
+            margin: 0;
+            color: $black-color;
+            font-weight: 500;
+
+            b {
+              font-size: 1.1rem;
+              color: $primary-color;
+            }
+          }
+
+          button {
+            color: $primary-color;
+            border-bottom: 1px solid $primary-color;
+            @include transition;
+
+            &:hover {
+              color: $primary-color;
+              border-color: $primary-color;
+            }
+          }
+        }
+      }
+
+      // Forgot password //
+      .forgot_password {
+        .back_button {
+          padding-bottom: 30px;
+
+          button {
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            color: $black-color;
+            font-size: 1.1rem;
+
+            &:hover {
+              color: $primary-color;
+            }
+
+            svg {
+              margin-right: 5px;
+              font-size: 19px;
+            }
+          }
+        }
+      }
+
+      &.reset_password_content_right {
+        form {
+          .regenrate_otp {
+            justify-content: center;
+          }
+
+          .form_title {
+            &.password_tittle {
+              margin-top: 2rem;
+
+              P {
+                &.light_color {
+                  text-align: start;
+                  color: $black-color;
+                  font-weight: 700;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Modern Login Button
+  .button {
+    padding: 16px 24px !important;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, $primary-color 0%, #4F6AFF 100%);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(27, 76, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+
+    // Shine effect
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      transition: left 0.5s ease;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(27, 76, 255, 0.4);
+
+      &::before {
+        left: 100%;
+      }
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      background: #E5E7EB;
+      color: #9CA3AF;
+      box-shadow: none;
+      cursor: not-allowed;
+      transform: none;
+
+      &::before {
+        display: none;
+      }
+    }
+  }
+}
+
+// Animation for form elements appearing
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth_section .content_right {
+  animation: fadeInUp 0.6s ease-out;
+}

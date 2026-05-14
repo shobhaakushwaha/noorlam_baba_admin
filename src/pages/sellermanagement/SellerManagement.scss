@@ -1,0 +1,14 @@
+@use "/src/scss/variables.scss" as *;
+@use "/src/scss/mixin.scss" as *;
+
+.wrapper_seller_management {
+    .wrapper_search{
+        .wrapper_cstm_tabers{
+            margin: 0;
+            ul{
+                margin-bottom: 0;
+            }
+        }
+    }
+
+}

@@ -1,0 +1,202 @@
+@use "/src/scss/variables.scss" as *;
+@use "/src/scss/mixin.scss" as *;
+
+// Support Action Buttons
+.wrapper_support {
+  .action-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    // Override global .action-btn styles for support page
+    .action-btn.chat-btn,
+    .action-btn.resolved-btn {
+      width: auto !important;
+      height: auto !important;
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+
+      svg {
+        font-size: 16px;
+        flex-shrink: 0;
+      }
+
+      span {
+        flex-shrink: 0;
+      }
+    }
+
+    .action-btn.chat-btn {
+      background: linear-gradient(135deg, $primary-color 0%, #4F6AFF 100%);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(27, 76, 255, 0.25);
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(27, 76, 255, 0.35);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+
+    .action-btn.resolved-btn {
+      background: rgba(16, 185, 129, 0.1);
+      color: #059669;
+      cursor: default;
+
+      &:disabled {
+        opacity: 1;
+        background: rgba(16, 185, 129, 0.1);
+      }
+    }
+  }
+
+  // Table message column styling
+  .message-cell {
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $primary-color;
+    }
+
+    .message-preview {
+      display: inline;
+
+      .read-more {
+        color: $primary-color;
+        font-weight: 500;
+        margin-left: 4px;
+        transition: all 0.2s ease;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+.wrap_support_management {
+  .faq_wrapper {
+    background-color: transparent;
+    padding: 0;
+
+    .title_cards {
+      background: $white-color;
+      border-radius: 12px;
+      padding: 0;
+      border: 1px solid #E5E7EB;
+      margin-bottom: 16px;
+      overflow: hidden;
+      transition: all 0.2s ease;
+
+      &:hover {
+        border-color: $primary-color;
+        box-shadow: 0 4px 12px rgba(27, 76, 255, 0.08);
+      }
+
+      .top-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 20px;
+        background: #F9FAFB;
+        border-bottom: 1px solid #E5E7EB;
+
+        .heading {
+          h5 {
+            margin-bottom: 0;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: $primary-color;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+          }
+        }
+
+        .common_view {
+          border: none;
+          background: transparent;
+          padding: 0;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+
+          svg {
+            font-size: 32px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            color: #6B7280;
+
+            &:hover {
+              background: rgba(27, 76, 255, 0.1);
+              color: $primary-color;
+            }
+
+            &.red {
+              &:hover {
+                background: rgba(239, 68, 68, 0.1);
+                color: #EF4444;
+              }
+            }
+          }
+
+          // Hide the vertical line separator
+          svg[class*="PiLine"] {
+            display: none;
+          }
+        }
+      }
+
+      .btm-content {
+        padding: 20px;
+
+        .short_content {
+          max-width: 100%;
+          width: 100%;
+
+          b {
+            display: block;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: #111827;
+            margin-bottom: 8px;
+            line-height: 1.5;
+          }
+
+          p {
+            font-size: 0.9375rem;
+            color: #6B7280;
+            line-height: 1.6;
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+
+    // Empty state
+    > p {
+      text-align: center;
+      color: #6B7280;
+      padding: 40px 20px;
+      background: $white-color;
+      border-radius: 12px;
+      border: 1px solid #E5E7EB;
+    }
+  }
+}

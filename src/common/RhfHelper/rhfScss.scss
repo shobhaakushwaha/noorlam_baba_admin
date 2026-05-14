@@ -1,0 +1,29 @@
+.width-full{
+     max-width: 100% !important;
+     width: 100% !important;
+
+}
+.multi-select-full {
+  width: 100%;
+}
+
+.multi-select-full .dropdown-container {
+  width: 100%;
+  min-height: 42px;   // make taller like input
+}
+
+.multi-select-full .dropdown-heading {
+  min-height: 42px;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+.mood-description {
+  font-size: 13px;
+  color: #9aa3b2;
+  margin-bottom: 10px;
+}
+
+.highlight-text {
+  color: #4f6df5;   /* blue highlight */
+  font-weight: 600;
+}
