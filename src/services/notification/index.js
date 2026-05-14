@@ -8,7 +8,7 @@ import {
 
 
 export const getNotificationListApi = async (data) => {
-  const endPoint = `/api/admin/notification/list?${new URLSearchParams(data)}`;
+  const endPoint = `/api/v1/admin/notification/list?${new URLSearchParams(data)}`;
   return await axios.get(endPoint, setJwtToken());
 };
 
@@ -16,7 +16,7 @@ export const getNotificationListApi = async (data) => {
 export const addNotificationApi = async (data) => {
   console.log(data, " update ");
   return await axios.post(
-    "api/admin/notification/send",
+    "api/v1/admin/notification/send",
     data,
     setMultiPartHeader(),
   );
@@ -25,7 +25,7 @@ export const addNotificationApi = async (data) => {
 
 
 export const deleteNotificationApi = async (payload) => {
-  const endPoint = `/api/admin/notification/delete`;
+  const endPoint = `/api/v1/admin/notification/delete`;
 
   return await axios.delete(endPoint, {
     data: payload,

@@ -22,7 +22,10 @@ export const editBannerApi = async (data) => {
 
 export const addBannertApi = async (data) => {
   console.log(data, " update ");
-  return await axios.post("api/admin/banner/add", data, setMultiPartHeader());
+  return await axios.post("/api/v1/admin/banner/add", data, {
+    ...setMultiPartHeader(),
+    skipEncryption: true,
+  });
 };
 
 export const changeStatusAPI = async (data) => {

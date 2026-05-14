@@ -17,14 +17,14 @@ const BannerModal = ({ modalAdd, closeAndClear, refreshList }) => {
     heading: "",
     description: "",
     image: null,
-    type: "",
+    // type: "",
   });
 
   const [formData, setformData] = useState({
     heading: "",
     description: "",
     image: null,
-    type: "",
+    // type: "",
   });
   //Add Banner
   const validation = () => {
@@ -44,10 +44,10 @@ const BannerModal = ({ modalAdd, closeAndClear, refreshList }) => {
       error["description"] = "Please Enter Description";
       status = false;
     }
-    if (!formData.type) {
-      error["type"] = "Please Select Type";
-      status = false;
-    }
+    // if (!formData.type) {
+    //   error["type"] = "Please Select Type";
+    //   status = false;
+    // }
 
     setError(error);
     return status;
@@ -68,7 +68,7 @@ const BannerModal = ({ modalAdd, closeAndClear, refreshList }) => {
       heading: "",
       description: "",
       image: null,
-      type: "",
+      // type: "",
     });
   };
 
@@ -80,16 +80,16 @@ const BannerModal = ({ modalAdd, closeAndClear, refreshList }) => {
     if (!validation()) return;
 
     try {
-      const payload = new FormData();
-      payload.append("heading", formData.heading);
-      payload.append("description", formData.description);
-      payload.append("type", formData.type);
+      const reqData = new FormData();
+      reqData.append("title", formData.heading);
+      reqData.append("description", formData.description);
+      reqData.append("type",'home');
 
       if (formData.image) {
-        payload.append("image", formData.image);
+        reqData.append("image", formData.image);
       }
-
-      const res = await addBannertApi(payload);
+console.log(...reqData, "reqData");
+      const res = await addBannertApi(reqData);
 
       if (res?.data?.status === 201) {
         closeAndClear();
@@ -139,7 +139,7 @@ const BannerModal = ({ modalAdd, closeAndClear, refreshList }) => {
   showError={submitted}  // 👈 move it here
 />
 
-        <div className="form_field">
+        {/* <div className="form_field">
           <Select
             name="type"
             value={formData.type}
@@ -157,7 +157,7 @@ const BannerModal = ({ modalAdd, closeAndClear, refreshList }) => {
          
 
           {error.type && <p style={{ color: "red" }}>{error.type}</p>}
-        </div>
+        </div> */}
 
      
 

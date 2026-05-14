@@ -28,13 +28,13 @@ const sideMenuData = () => {
       name: "Seller Management",
       icon: <GiMicrophone />,
     },
-    {
-      id: 4,
-      enabled: true,
-      path: "/content-management",
-      name: "Content Management",
-      icon: <MdLibraryMusic />,
-    },
+    // {
+    //   id: 4,
+    //   enabled: true,
+    //   path: "/content-management",
+    //   name: "Content Management",
+    //   icon: <MdLibraryMusic />,
+    // },
     {
       id: 5,
       enabled: true,
@@ -63,13 +63,13 @@ const sideMenuData = () => {
       name: "CMS Management",
       icon: <IoDocumentText />,
     },
-    {
-      id: 11,
-      enabled: true,
-      path: "/song-management",
-      name: "Song Management",
-      icon: <IoMusicalNotes />,
-    },
+    // {
+    //   id: 11,
+    //   enabled: true,
+    //   path: "/song-management",
+    //   name: "Song Management",
+    //   icon: <IoMusicalNotes />,
+    // },
        {
       id: 12,
       enabled: true,

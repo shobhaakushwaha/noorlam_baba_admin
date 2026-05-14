@@ -162,10 +162,14 @@ const BannerManagement = () => {
     <div className="wrapper_banner_management">
       <div className="dashboard_title">
         <h3>Banner Management</h3>
+      </div>
+
+      <div className="banner_management_toolbar">
         <Button className="light_button" onClick={() => setModalAdd(true)}>
           + Add Banner
         </Button>
       </div>
+
       <div className="table_wrap table_responsive">
         <table className="table custom_table">
           <thead>
