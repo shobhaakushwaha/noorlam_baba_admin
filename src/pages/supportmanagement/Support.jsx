@@ -18,7 +18,6 @@ import ChatModal from "components/modals/ChatModal";
 import { toastMessage } from "utils/toastMessage";
 
 const Support = ({ supportType}) => {
-    console.log(supportType,":::::::::::::::::::::::::::::::::::")
   const [search, setSearch] = useState("");
   const debouncedValue = useDebounce(search, 300);
 
@@ -40,7 +39,6 @@ const Support = ({ supportType}) => {
   const [selectedDescription, setSelectedDescription] = useState("");
   const [selectedData, setSelectedData] = useState({});
   const previousSupportType = useRef(supportType);
-    console.log("Support List Type:-->", supportType);
 
   // Handle pagination
   const handlePageChange = (event) => {
@@ -63,9 +61,10 @@ const Support = ({ supportType}) => {
     let data = {
       page: activePage,
       limit: limits,
-    type: supportType,
     };
-console.log("Support List Payload:-->", data);
+
+    if (supportType) data.type = supportType;
+
     try {
       const { data: response, status } = await supportListApi(data);
 
@@ -82,10 +81,9 @@ const listData = async () => {
   let data = {
     page: activePage,
     limit: limits,
-    type: supportType,
   };
 
-  console.log("Support List Payload:-->", data);
+  if (supportType) data.type = supportType;
 
   try {
     const { data: response, status } = await supportListApi(data);

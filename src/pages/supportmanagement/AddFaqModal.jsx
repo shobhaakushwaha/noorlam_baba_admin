@@ -1,4 +1,4 @@
-import { Button, Input, TextArea } from "components/form";
+import { Button, Input, Select, TextArea } from "components/form";
 import CustomModal from "components/modals/CustomModal";
 import React, { useEffect, useState } from "react";
 import { addFaqApi } from "services/supportManagment";
@@ -15,6 +15,7 @@ const AddFaqModal = ({
   const [formData, setFormData] = useState({
     question: "",
     answer: "",
+    type: faqType || "seller",
   });
 
   const [error, setError] = useState({});
@@ -31,6 +32,7 @@ const AddFaqModal = ({
 
     if (!formData.question.trim()) errors.question = "Question is required";
     if (!formData.answer.trim()) errors.answer = "Answer is required";
+    if (!formData.type) errors.type = "Type is required";
 
     setError(errors);
     return Object.keys(errors).length === 0;
@@ -38,7 +40,7 @@ const AddFaqModal = ({
 
   // ---------------- reset
   const resetForm = () => {
-    setFormData({ question: "", answer: "" });
+    setFormData({ question: "", answer: "", type: faqType || "seller" });
     setError({});
     setIsEdit(false);
   };
@@ -52,7 +54,7 @@ const AddFaqModal = ({
     const payload = {
       question: formData.question,
       answer: formData.answer || "",
-      type: editFaq?.type || faqType,
+      type: editFaq?.type || formData.type,
       ...(isEdit && editFaq?._id && { faqId: editFaq._id }),
     };
 
@@ -81,11 +83,12 @@ const AddFaqModal = ({
       setFormData({
         question: editFaq.question || "",
         answer: editFaq.answer || "",
+        type: editFaq.type || faqType || "seller",
       });
     } else {
       resetForm();
     }
-  }, [editFaq]);
+  }, [editFaq, faqType]);
 
   return (
     <CustomModal
@@ -96,6 +99,20 @@ const AddFaqModal = ({
       <h3>{isEdit ? "Edit FAQ" : "Add FAQ"}</h3>
 
       <div className="wrap_sent_notify">
+        <div className="form_field">
+          <Select
+            name="type"
+            value={formData.type}
+            onChange={handleInputChange}
+            disabled={isEdit}
+          >
+            <option value="seller">Seller</option>
+            <option value="user">User</option>
+            <option value="logistic">Logistic</option>
+          </Select>
+          {error.type && <p style={{ color: "red" }}>{error.type}</p>}
+        </div>
+
         <div className="form_field">
           <Input
             name="question"

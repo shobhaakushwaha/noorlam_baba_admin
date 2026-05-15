@@ -5,8 +5,11 @@ import {
 } from "../../config/axiosInstance";
 
 export const FaqListApi = async (data) => {
-  const endPoint = `/api/v1/admin/faq/list?${new URLSearchParams(data)}`;
-  return await axios.get(endPoint, setJwtToken());
+  const endPoint = `/api/v1/admin/faq/list`;
+  return await axios.get(endPoint, {
+    ...setJwtToken(),
+    params: data,
+  });
 };
 export const addFaqApi = async (data) => {
   const endPoint = `/api/v1/admin/faq/add`;
@@ -22,8 +25,11 @@ export const addFaqApi = async (data) => {
 
 
 export const supportListApi = async (data) => {
-  const endPoint = `/api/v1/admin/support/list?${new URLSearchParams(data)}`;
-  return await axios.get(endPoint, setJwtToken());
+  const endPoint = `/api/v1/admin/support/list`;
+  return await axios.get(endPoint, {
+    ...setJwtToken(),
+    params: data,
+  });
 };
 
 // export const supportApi = async (data) => {

@@ -8,7 +8,7 @@ import AddFaqModal from "./AddFaqModal";
 
 const SupportManagement = () => {
   const [search, setSearch] = useState("");
-  const [faqType, setFaqType] = useState("seller");
+  const [faqType, setFaqType] = useState("");
 
   const [dashboardTab, setDashboardTab] = useState("Approved");
   const [refreshFaq, setRefreshFaq] = useState(0);
@@ -77,6 +77,7 @@ const SupportManagement = () => {
             value={faqType}
             onChange={(e) => setFaqType(e.target.value)}
           >
+            <option value="">All</option>
             <option value="seller">Seller</option>
             <option value="logistic">Logistic</option>
             <option value="user">User</option>
@@ -92,7 +93,7 @@ const SupportManagement = () => {
       <AddFaqModal
         modalAdd={faqModalOpen}
         closeAndClear={closeAndClear}
-        faqType={faqType}
+        faqType={faqType || "seller"}
         onSuccess={() => setRefreshFaq(Date.now())}
       />
     </div>

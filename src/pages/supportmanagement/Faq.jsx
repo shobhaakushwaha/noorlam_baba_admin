@@ -1,5 +1,5 @@
 import DeleteModal from "components/modals/DeleteModal";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import useDebounce from "hooks/UseDebounce";
 import { PiLineVerticalLight } from "react-icons/pi";
@@ -16,8 +16,9 @@ import {
   TbPlayerTrackNextFilled,
   TbPlayerTrackPrevFilled,
 } from "react-icons/tb";
+import { findSerialNumber } from "utils/formValidator";
 
-const Faq = ({ refresh, search, faqType = "seller" }) => {
+const Faq = ({ refresh, search, faqType = "" }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editFaq, setEditFaq] = useState(null);
   const [total, setTotal] = useState(null);
@@ -34,6 +35,7 @@ const Faq = ({ refresh, search, faqType = "seller" }) => {
   const [selectedId, setSelectedId] = useState(null);
 
   const debouncedValue = useDebounce(search, 300);
+  const previousFilters = useRef({ search: debouncedValue, faqType });
 
   const activePage = +searchParams.get("page") || 1;
   const limits = +searchParams.get("limit") || 10;
@@ -42,9 +44,10 @@ const Faq = ({ refresh, search, faqType = "seller" }) => {
     let data = {
       page: activePage,
       limit: limits,
-      type: faqType,
-      search: debouncedValue,
     };
+
+    if (faqType) data.type = faqType;
+    if (debouncedValue) data.search = debouncedValue;
 
     try {
       const { data: response, status } = await FaqListApi(data);
@@ -54,10 +57,21 @@ const Faq = ({ refresh, search, faqType = "seller" }) => {
           response?.data?.list ||
           response?.data?.listing ||
           response?.data;
+        const faqItems = Array.isArray(list) ? list : [];
+        const hasMixedType =
+          faqType &&
+          faqItems.some(
+            (item) =>
+              item?.type && item.type.toLowerCase() !== faqType.toLowerCase(),
+          );
+        const visibleList = hasMixedType
+          ? faqItems.filter(
+              (item) => item?.type?.toLowerCase() === faqType.toLowerCase(),
+            )
+          : faqItems;
 
-        setFaqList(Array.isArray(list) ? list : []);
-        setTotal(response.data.total);
-              console.log("decrypted user list response:-->", response?.data);
+        setFaqList(visibleList);
+        setTotal(hasMixedType ? visibleList.length : response?.data?.total || 0);
 
         setCount(response?.counts);
       }
@@ -98,6 +112,21 @@ const Faq = ({ refresh, search, faqType = "seller" }) => {
 
   // pagination / search changes
   useEffect(() => {
+    const filtersChanged =
+      previousFilters.current.search !== debouncedValue ||
+      previousFilters.current.faqType !== faqType;
+
+    if (filtersChanged) {
+      previousFilters.current = { search: debouncedValue, faqType };
+
+      if (activePage !== 1) {
+        const urlInstance = new URLSearchParams(searchParams);
+        urlInstance.set("page", 1);
+        setSearchParams(urlInstance);
+        return;
+      }
+    }
+
     listData();
   }, [activePage, limits, debouncedValue, faqType]);
 
@@ -107,12 +136,6 @@ const Faq = ({ refresh, search, faqType = "seller" }) => {
       listData();
     }
   }, [refresh]);
-
- useEffect(() => {
-  const urlInstance = new URLSearchParams(searchParams);
-  urlInstance.set("page", 1);
-  setSearchParams(urlInstance);
-}, [debouncedValue, faqType]);
 
   const closeAndClear = () => {
     setFaqModalOpen(false);
@@ -126,7 +149,7 @@ const Faq = ({ refresh, search, faqType = "seller" }) => {
           <div className="title_cards" key={item._id || index}>
             <div className="top-content">
               <div className="heading">
-                <h5>{`FAQ ${index + 1}`}</h5>
+                <h5>{`FAQ ${findSerialNumber(index, activePage, limits)}`}</h5>
               </div>
 
               <div className="common_view actions_wrap">
