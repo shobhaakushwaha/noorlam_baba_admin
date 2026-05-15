@@ -1,15 +1,13 @@
 import { Button, DatePicker, Input, TextArea } from "components/form";
 import CustomModal from "components/modals/CustomModal";
 import React, { useState } from "react";
-import { FaRegClock } from "react-icons/fa";
 import { LuCalendarDays } from "react-icons/lu";
 import { useSearchParams } from "react-router-dom";
 import { addNotificationApi } from "services/notification";
-import { checkInOutTo24HrFormat, formatDates } from "utils/dateFormat";
-import { failedMessage, toastMessage } from "utils/toastMessage";
+import { formatDates } from "utils/dateFormat";
+import { toastMessage } from "utils/toastMessage";
 
 const SentNotificationModal = ({ modalAdd, closeAndClear }) => {
-  const [selectedTime, setSelectedTime] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const tab = searchParams.get("tab");
 
@@ -95,6 +93,7 @@ const SentNotificationModal = ({ modalAdd, closeAndClear }) => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    setError((prev) => ({ ...prev, [name]: "" }));
   };
 
   const addNotificationFormSubmit = async (e) => {
@@ -147,12 +146,12 @@ const SentNotificationModal = ({ modalAdd, closeAndClear }) => {
       <h3>Sent Notification</h3>
 
       <div className="wrap_sent_notify">
-        <form action="">
+        <form onSubmit={addNotificationFormSubmit}>
           <div className="form_field">
             <Input
               label="Title (max 25 alphabets)"
               name="title"
-              max="25"
+              maxLength={25}
               value={formData.title}
               placeholder="Enter Title"
               onChange={handleInputChange}
@@ -247,60 +246,38 @@ const SentNotificationModal = ({ modalAdd, closeAndClear }) => {
                   )}
                 </div>
 
-                {/* Time */}
                 <div className="form_field">
                   <label htmlFor="">Select Time</label>
-{/* Time */}
-<div className="form_field">
-  {/* <label htmlFor="">Select Time</label> */}
-  <div
-    style={{ position: "relative", width: "100%" }}
-    onClick={(e) => {
-      const input = e.currentTarget.querySelector('input[type="time"]');
-      if (input) input.showPicker();
-    }}
-  >
-    <input
-      type="time"
-      name="scheduledTime"
-      value={formData.scheduledTime}
-      style={{
-        width: "100%",
-        padding: "10px 12px",
-        border: "1px solid #ccc",
-        borderRadius: "6px",
-        cursor: "pointer",
-        fontSize: "14px",
-      }}
-      onChange={(e) =>
-        setFormData((prev) => ({
-          ...prev,
-          scheduledTime: e.target.value,
-          isSchedule: true,
-        }))
-      }
-    />
-  </div>
-  {error.scheduledTime && (
-    <p style={{ color: "red" }}>{error.scheduledTime}</p>
-  )}
-</div>              {/* <DatePicker
-                    icon={<FaRegClock />}
-                    label="Select Time"
-                    selected={formData.scheduledTime}
-                    showTimeSelect
-                    showTimeSelectOnly
-                    timeIntervals={15}
-                    timeCaption="Time"
-                    dateFormat="h:mm aa"
-                    onChange={(time) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        scheduledTime: time,
-                        isSchedule: true,
-                      }))
-                    }
-                  /> */}
+                  <div
+                    style={{ position: "relative", width: "100%" }}
+                    onClick={(e) => {
+                      const input =
+                        e.currentTarget.querySelector('input[type="time"]');
+                      if (input) input.showPicker();
+                    }}
+                  >
+                    <input
+                      type="time"
+                      name="scheduledTime"
+                      value={formData.scheduledTime}
+                      style={{
+                        width: "100%",
+                        padding: "10px 12px",
+                        border: "1px solid #ccc",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        fontSize: "14px",
+                      }}
+                      onChange={(e) => {
+                        setFormData((prev) => ({
+                          ...prev,
+                          scheduledTime: e.target.value,
+                          isSchedule: true,
+                        }));
+                        setError((prev) => ({ ...prev, scheduledTime: "" }));
+                      }}
+                    />
+                  </div>
                   {error.scheduledTime && (
                     <p style={{ color: "red" }}>{error.scheduledTime}</p>
                   )}
@@ -310,7 +287,7 @@ const SentNotificationModal = ({ modalAdd, closeAndClear }) => {
           )}
 
           <div className="button_wrap">
-            <Button onClick={addNotificationFormSubmit}>Send Now</Button>
+            <Button type="submit">Send Now</Button>
           </div>
         </form>
       </div>

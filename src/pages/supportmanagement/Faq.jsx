@@ -40,6 +40,14 @@ const Faq = ({ refresh, search, faqType = "" }) => {
   const activePage = +searchParams.get("page") || 1;
   const limits = +searchParams.get("limit") || 10;
 
+  const getTotalCount = (response) =>
+    response?.data?.total ||
+    response?.data?.totalCount ||
+    response?.data?.count ||
+    response?.total ||
+    response?.counts ||
+    0;
+
   const listData = async () => {
     let data = {
       page: activePage,
@@ -71,7 +79,7 @@ const Faq = ({ refresh, search, faqType = "" }) => {
           : faqItems;
 
         setFaqList(visibleList);
-        setTotal(hasMixedType ? visibleList.length : response?.data?.total || 0);
+        setTotal(getTotalCount(response));
 
         setCount(response?.counts);
       }
@@ -193,11 +201,11 @@ const Faq = ({ refresh, search, faqType = "" }) => {
         <p>No FAQs found</p>
       )}
 
-     {total > limits && (
+     {Number(total) > limits && (
         <div className="pagination-wrapper">
           <ReactPaginate
             forcePage={activePage - 1} // ZERO-based index
-            pageCount={Math.ceil(total / limits)}
+            pageCount={Math.ceil(Number(total) / limits)}
             onPageChange={(e) => handlePageChange(e.selected + 1)}
             // previousLabel="Previous"
             previousLabel={<TbPlayerTrackPrevFilled size={25} />}

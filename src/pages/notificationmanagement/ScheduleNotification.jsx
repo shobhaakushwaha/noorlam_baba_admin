@@ -73,7 +73,7 @@ const ScheduleNotification = ({ refreshKey }) => {
     try {
       const id = detailsData._id;
 
-      const { status, data } = await deleteNotificationApi({ id });
+      const { status, data } = await deleteNotificationApi(id);
 
       toastMessage(data?.message, "success");
 

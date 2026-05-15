@@ -17,7 +17,7 @@ import { IoClose } from "react-icons/io5";
 import ChatModal from "components/modals/ChatModal";
 import { toastMessage } from "utils/toastMessage";
 
-const Support = ({ supportType}) => {
+const Support = ({ supportType }) => {
   const [search, setSearch] = useState("");
   const debouncedValue = useDebounce(search, 300);
 
@@ -40,6 +40,14 @@ const Support = ({ supportType}) => {
   const [selectedData, setSelectedData] = useState({});
   const previousSupportType = useRef(supportType);
 
+  const getTotalCount = (response) =>
+    response?.data?.total ||
+    response?.data?.totalCount ||
+    response?.data?.count ||
+    response?.total ||
+    response?.counts ||
+    0;
+
   // Handle pagination
   const handlePageChange = (event) => {
     const urlInstance = new URLSearchParams(searchParams);
@@ -57,7 +65,7 @@ const Support = ({ supportType}) => {
     setSearchParams(urlInstance);
   };
 
-  const listData1 = async () => {
+  const listData = async () => {
     let data = {
       page: activePage,
       limit: limits,
@@ -70,33 +78,13 @@ const Support = ({ supportType}) => {
 
       if (status === 200) {
         setFaqList(response?.data?.listing || response?.data?.list || []);
-        setTotal(response.data.total);
+        setTotal(getTotalCount(response));
         setCount(response?.counts);
       }
     } catch (error) {
       console.log(error);
     }
   };
-const listData = async () => {
-  let data = {
-    page: activePage,
-    limit: limits,
-  };
-
-  if (supportType) data.type = supportType;
-
-  try {
-    const { data: response, status } = await supportListApi(data);
-
-    if (status === 200) {
-      setFaqList(response?.data?.listing || response?.data?.list || []);
-      setTotal(response.data.total);
-      setCount(response?.counts);
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
   const resolveQuery = async () => {
     let data = {
       ticketId: selectedId,
@@ -231,11 +219,11 @@ const listData = async () => {
           </tbody>
         </table>
       </div>
-      {total > limits && (
+      {Number(total) > limits && (
         <div className="pagination-wrapper">
           <ReactPaginate
             forcePage={activePage - 1}
-            pageCount={Math.ceil(total / limits)}
+            pageCount={Math.ceil(Number(total) / limits)}
             onPageChange={(e) => handlePageChange(e.selected + 1)}
             previousLabel={<TbPlayerTrackPrevFilled size={25} />}
             nextLabel={<TbPlayerTrackNextFilled size={25} />}

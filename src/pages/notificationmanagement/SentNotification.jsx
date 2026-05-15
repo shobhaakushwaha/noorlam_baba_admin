@@ -84,7 +84,7 @@ const SentNotification = ({ refreshKey }) => {
     try {
       const id = detailsData._id;
 
-      const { data } = await deleteNotificationApi({ id });
+      const { data } = await deleteNotificationApi(id);
       toastMessage(data.message, "success");
       setIsModalOpen(false);
       setNotificationLists((prev) => prev.filter((item) => item._id !== id));
