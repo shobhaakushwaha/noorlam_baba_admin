@@ -188,7 +188,7 @@ const SentNotificationModal = ({ modalAdd, closeAndClear }) => {
               </li>
 
               <li>
-                <span>Only Artists</span>
+                <span>Only Seller</span>
                 <input
                   type="checkbox"
                   checked={formData.userType === "artist"}

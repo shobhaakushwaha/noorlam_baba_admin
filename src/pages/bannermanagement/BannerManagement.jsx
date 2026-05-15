@@ -27,6 +27,7 @@ import DeleteModal from "../../components/modals/DeleteModal";
 import { toastMessage } from "utils/toastMessage";
 import CustomModal from "components/modals/CustomModal";
 import { userPlaceholder } from "assets/icons";
+import { findSerialNumber } from "utils/formValidator";
 
 
 const BannerManagement = () => {
@@ -174,7 +175,7 @@ const BannerManagement = () => {
         <table className="table custom_table">
           <thead>
             <tr>
-              <th className="nowrap text-center">Banner ID</th>
+              <th className="nowrap text-center">S.No.</th>
               <th className="nowrap text-center">Image</th>
               <th className="nowrap text-center">Text</th>
               <th className="nowrap text-center">Placement</th>
@@ -187,9 +188,10 @@ const BannerManagement = () => {
             {bannerList && bannerList?.length > 0 ? (
               bannerList.map((data, index) => (
                 <tr key={index}>
-                  <td className="text-center">
-                    {data?.bannerNumber ? data?.bannerNumber : "N/A"}
-                  </td>
+                  
+                   <td className="text-center">
+                                    {findSerialNumber(index, activePage, limits)}
+                                  </td>
                   <td className="text-center">
                     <img className="cstm_img_table" src={data?.image} alt="" onClick={() =>
                           showImagePreviewHandler(
