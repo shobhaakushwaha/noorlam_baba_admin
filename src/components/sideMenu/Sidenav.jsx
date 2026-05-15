@@ -77,13 +77,13 @@ const sideMenuData = () => {
     //   name: "Song Management",
     //   icon: <IoMusicalNotes />,
     // },
-       {
-      id: 12,
-      enabled: true,
-      path: "/reports-management",
-      name: "Reports Management",
-      icon: <IoDocumentText />,
-    },
+    //    {
+    //   id: 12,
+    //   enabled: true,
+    //   path: "/reports-management",
+    //   name: "Reports Management",
+    //   icon: <IoDocumentText />,
+    // },
      {
       id: 13,
       enabled: true,

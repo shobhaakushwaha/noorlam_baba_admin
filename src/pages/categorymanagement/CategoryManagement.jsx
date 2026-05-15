@@ -66,7 +66,7 @@ const CategoryManagement = () => {
     }
 
     onShow();
-
+ console.log("payload:-->", payload);
     try {
       const { data: responseData } = await getCategoryListApi(payload);
 
