@@ -9,13 +9,12 @@ export const FaqListApi = async (data) => {
   return await axios.get(endPoint, setJwtToken());
 };
 export const addFaqApi = async (data) => {
-  const endPoint = `/api/v1/admin/faq/add-update`;
+  const endPoint = `/api/v1/admin/faq/add`;
 
-  return await axios.post(
-    endPoint,
-    data,
-    setJwtToken() // headers
-  );
+  return await axios.post(endPoint, data, {
+    ...setJwtToken(),
+    skipEncryption: true,
+  });
 };
 
 

@@ -68,7 +68,7 @@ const Faq = ({ refresh, search, faqType = "seller" }) => {
 
  
 
-   const handleDeleteBanner = async () => {
+   const handleDeleteFaq = async () => {
       if (!detailsData?._id) return;
       onShow();
       try {
@@ -202,7 +202,7 @@ const Faq = ({ refresh, search, faqType = "seller" }) => {
           setIsModalOpen(false);
           setDetailsData({});
         }}
-        onConfirm={handleDeleteBanner}
+        onConfirm={handleDeleteFaq}
       />
     
 

@@ -12,10 +12,9 @@ const AddFaqModal = ({
   faqType = "seller",
 }) => {
   const [isEdit, setIsEdit] = useState(false);
-
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
+    question: "",
+    answer: "",
   });
 
   const [error, setError] = useState({});
@@ -30,8 +29,8 @@ const AddFaqModal = ({
   const validation = () => {
     const errors = {};
 
-    if (!formData.title.trim()) errors.title = "Title is required";
-    if (!formData.description.trim()) errors.description = "Description is required";
+    if (!formData.question.trim()) errors.question = "Question is required";
+    if (!formData.answer.trim()) errors.answer = "Answer is required";
 
     setError(errors);
     return Object.keys(errors).length === 0;
@@ -39,7 +38,7 @@ const AddFaqModal = ({
 
   // ---------------- reset
   const resetForm = () => {
-    setFormData({ title: "", description: "" });
+    setFormData({ question: "", answer: "" });
     setError({});
     setIsEdit(false);
   };
@@ -51,21 +50,24 @@ const AddFaqModal = ({
     if (!validation()) return;
 
     const payload = {
-      question: formData.title,
-      answer: formData.description,
+      question: formData.question,
+      answer: formData.answer || "",
       type: editFaq?.type || faqType,
-      ...(isEdit && { faqId: editFaq?._id }),
+      ...(isEdit && editFaq?._id && { faqId: editFaq._id }),
     };
 
     try {
       const res = await addFaqApi(payload);
+      const isSuccess =
+        [200, 201].includes(res?.status) ||
+        [200, 201].includes(res?.data?.status);
 
-      if (res?.status === 200) {
+      if (isSuccess) {
         toastMessage(res?.data?.message, "success");
 
-        onSuccess();       // 🔥 refresh FIRST
+        onSuccess();
         resetForm();
-        closeAndClear();   // close AFTER
+        closeAndClear();
       }
     } catch (error) {
       toastMessage(error?.response?.data?.message, "error");
@@ -77,8 +79,8 @@ const AddFaqModal = ({
     if (editFaq) {
       setIsEdit(true);
       setFormData({
-        title: editFaq.question || editFaq.title || "",
-        description: editFaq.answer || editFaq.description || "",
+        question: editFaq.question || "",
+        answer: editFaq.answer || "",
       });
     } else {
       resetForm();
@@ -96,22 +98,22 @@ const AddFaqModal = ({
       <div className="wrap_sent_notify">
         <div className="form_field">
           <Input
-            name="title"
-            placeholder="Enter Title"
-            value={formData.title}
+            name="question"
+            placeholder="Enter question"
+            value={formData.question}
             onChange={handleInputChange}
           />
-          {error.title && <p style={{ color: "red" }}>{error.title}</p>}
+          {error.question && <p style={{ color: "red" }}>{error.question}</p>}
         </div>
 
         <div className="form_field">
           <TextArea
-            name="description"
+            name="answer"
             placeholder="Write Here..."
-            value={formData.description}
+            value={formData.answer}
             onChange={handleInputChange}
           />
-          {error.description && <p style={{ color: "red" }}>{error.description}</p>}
+          {error.answer && <p style={{ color: "red" }}>{error.answer}</p>}
         </div>
 
         <div className="button_wrap">
