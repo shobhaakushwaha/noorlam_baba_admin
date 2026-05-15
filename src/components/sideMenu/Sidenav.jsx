@@ -56,8 +56,15 @@ const sideMenuData = () => {
       name: "Category Management",
       icon: <HiViewGrid />,
     },
-    {
+      {
       id: 9,
+      enabled: true,
+      path: "/subcategory-management",
+      name: "SubCategory Management",
+      icon: <HiViewGrid />,
+    },
+    {
+      id: 10,
       enabled: true,
       path: "/cms-management",
       name: "CMS Management",

@@ -1,16 +1,13 @@
-import { logger } from "utils/logger";
 import {
   instance as axios,
-  getToken,
   setJwtToken,
   setMultiPartHeader,
-  // setMultiPartHeader,
 } from "../../config/axiosInstance";
 
 // User List
 
 export const getCategoryListApi = async (data) => {
-  const endPoint = `/api/admin/category/list?${new URLSearchParams(data)}`;
+  const endPoint = `/api/v1/admin/category/list?${new URLSearchParams(data)}`;
 
   return await axios.get(endPoint, setJwtToken());
 };
@@ -18,7 +15,7 @@ export const getCategoryListApi = async (data) => {
 // -------------------dleelt cat
 
 export const deleteCategoryApi = async ({ id }) => {
-  const endPoint = `/api/admin/category/delete/${id}`;
+  const endPoint = `/api/v1/admin/category/delete/${id}`;
 
   return await axios.delete(endPoint, setJwtToken());
 };
@@ -26,23 +23,20 @@ export const deleteCategoryApi = async ({ id }) => {
 // ---------add category
 
 export const addCategoryApi = async (data) => {
-  const endPoint = `/api/admin/category/add`;
+  const endPoint = `/api/v1/admin/category/add`;
 
-  return await axios.post(endPoint, data, setMultiPartHeader());
+  return await axios.post(endPoint, data, {
+    ...setMultiPartHeader(),
+    skipEncryption: true,
+  });
 };
 
-// -----edit category
 
-export const editCategoryApi = async ({ id, data }) => {
-  const endPoint = `/api/admin/category/update/${id}`;
-
-  return await axios.put(endPoint, data, setMultiPartHeader());
-};
 
 // -------------------------------fetch data  this is contnent management of api
 
 export const getAllCategoryOptionListApi = async (data) => {
-  const endPoint = `/api/admin/content/all_categories?${new URLSearchParams(
+  const endPoint = `/api/v1/admin/content/all_categories?${new URLSearchParams(
     data
   )}`;
 
@@ -50,11 +44,10 @@ export const getAllCategoryOptionListApi = async (data) => {
 };
 
 export const  profileUpdated = async(data)=>{
-    return await axios.patch("/api/admin/account/profile",data, setMultiPartHeader());
+    return await axios.patch("/api/v1/admin/account/profile",data, setMultiPartHeader());
 }
 
 export const  profileDetailsData = async()=>{
-    return await axios.get("/api/admin/account/profile",setJwtToken());
+    return await axios.get("/api/v1/admin/account/profile",setJwtToken());
 }
-
 

@@ -1,11 +1,9 @@
 import CmnModal from "components/modals/CmnModal";
-import DeleteModal from "components/modals/DeleteModal";
 import useButtonLoader from "hooks/useButtonLoader";
 import React from "react";
 import { MdDeleteSweep } from "react-icons/md";
 import { deleteCategoryApi } from "services/CategoryManagement";
 import { firstWordCapital } from "utils/common";
-import { logger } from "utils/logger";
 import { toastMessage } from "utils/toastMessage";
 
 const DeleteCategory = ({
@@ -17,7 +15,6 @@ const DeleteCategory = ({
 }) => {
   const [buttonLoader, setButtonLoader] = useButtonLoader("Delete");
 
-  logger.log("catDetails:--------->", catDetails?._id);
   // change delete handler
   const changeDeleteHandler = async () => {
     try {

@@ -25,9 +25,9 @@ export const Header = () => {
     navigate("/");
   };
 
-  const hereIsToken = localStorage.getItem("noorlam_admin");
+  const hereIsToken = localStorage.getItem("naksha_admin");
 
-  const userInfo = JSON.parse(localStorage.getItem("noorlam_admin-detail"));
+  const userInfo = JSON.parse(localStorage.getItem("naka_admin-detail"));
   return (
     <>
       {/* dashboad header start here */}

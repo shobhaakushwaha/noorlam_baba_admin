@@ -2,14 +2,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { bootstrapLoaderHelperFun } from "common/bootstrapLoader";
 import { schemaValidate } from "common/validationRules/validationRules";
 import { Input } from "components/form";
-import ImageUpload from "components/imageupload/ImageUpload";
 import RhfImageUpload from "components/imageupload/rhfImageUpload";
 import CustomModal from "components/modals/CustomModal";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { addCategoryApi, editCategoryApi } from "services/CategoryManagement";
+import { addCategoryApi} from "services/CategoryManagement";
 import { firstWordCapital } from "utils/common";
-import { logger } from "utils/logger";
 import { toastMessage } from "utils/toastMessage";
 
 const AddCategory = ({
@@ -31,7 +29,6 @@ const AddCategory = ({
       errors,
       isValid,
       isDirty,
-      touchedFields,
       isSubmitting,
       //  isSubmitSuccessful,
       //  reset,
@@ -47,25 +44,23 @@ const AddCategory = ({
 
   // -------------------------------------submit
   const doSubmit = async (dataInp) => {
-    console.log("dataInp:--->", dataInp);
-
     const formData = new FormData();
     formData.append("name", dataInp?.playListName);
     formData.append("type", catTabName);
 
-    // only append image if user selected a NEW file
+    if (isEdit && catDetails?._id) {
+      formData.append("categoryId", catDetails?._id);
+    }
+
     if (dataInp.image instanceof File) {
       formData.append("image", dataInp?.image);
     }
     try {
       const {
         data: { status, message },
-      } = await (isEdit
-        ? editCategoryApi({ data: formData, id: catDetails?._id })
-        : addCategoryApi(formData));
+      } = await addCategoryApi(formData);
 
-      if (status === 201 || 200) {
-        logger.log(message);
+      if (status === 201 || status === 200) {
         toastMessage(message, "success");
         getCatListFun();
         closeAndClear();
@@ -85,10 +80,10 @@ const AddCategory = ({
 
   useEffect(() => {
     if (isEdit) {
-      setValue("playListName", catDetails?.name);
+      setValue("playListName", catDetails?.name || "");
       setImgForPreview(catDetails?.image);
     }
-  }, [isEdit]);
+  }, [isEdit, catDetails, setValue]);
 
   return (
     <CustomModal

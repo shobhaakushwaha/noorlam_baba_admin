@@ -54,9 +54,9 @@ export const setMultiPartHeader = () => {
  
 export const removeToken = () => {
   const keys = [
-    "noorlam_admin",
-    "noorlam_admin-detail",
-    "noorlam_admin-permission",
+    "naksha_admin",
+    "naksha_admin-detail",
+    "naksha_admin-permission",
   ];
   keys.forEach((key) => localStorage.removeItem(key));
 };

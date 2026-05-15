@@ -23,6 +23,7 @@ import ReportsManagement from "pages/reportsmanagement/ReportsManagement";
 import BannerManagement from "pages/bannermanagement/BannerManagement";
 import ContentManagement from "pages/contentmanagement/ContentManagement";
 import ProfileUpdate from "pages/profile-update/profile-update";
+import SubcategoryManagement from "pages/subcategorymanagment/subcategoryManagement";
 
 const Routing = () => {
   const allRoutes = [
@@ -144,6 +145,12 @@ const Routing = () => {
       id: 19,
       name: "/profile-update",
       elements: <ProfileUpdate />,
+      isActive: true,
+    },
+    {
+      id: 20,
+      name: "/subcategory-management",
+      elements: <SubcategoryManagement />,
       isActive: true,
     },
   ].filter((check) => check?.isActive);
