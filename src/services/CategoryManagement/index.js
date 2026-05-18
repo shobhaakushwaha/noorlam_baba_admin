@@ -44,7 +44,7 @@ export const getAllCategoryOptionListApi = async (data) => {
 };
 
 export const  profileUpdated = async(data)=>{
-    return await axios.patch("/api/v1/admin/account/profile",data, setMultiPartHeader());
+    return await axios.put("/api/v1/admin/account/profile",data, setMultiPartHeader());
 }
 
 export const  profileDetailsData = async()=>{

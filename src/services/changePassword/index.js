@@ -8,7 +8,7 @@ import {
 // User List
 
 export const changePasswordApi = async (data) => {
-  const endPoint = `/api/admin/account/update_password`;
+  const endPoint = `/api/v1/admin/account/change-password`;
 
-  return await axios.patch(endPoint, data, setJwtToken());
+  return await axios.post(endPoint, data, setJwtToken());
 };

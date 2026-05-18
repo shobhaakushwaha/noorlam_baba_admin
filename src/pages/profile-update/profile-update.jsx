@@ -114,15 +114,16 @@ const validate = () => {
   if (!validate()) return; 
 
 // 
-  const payload = new FormData();
-  payload.append("name", formData.name);
-  payload.append("mobile", formData.mobile);
-    payload.append("profile", formData.image);
+  const reqData = new FormData();
+  reqData.append("name", formData.name);
+  reqData.append("mobile", formData.mobile);
+    reqData.append("profile", formData.image);
 
 //   if (formData.profile) payload.append("image", formData.image);
 
-  try {
-    const response = await profileUpdated(payload);
+  try {f
+    const response = await profileUpdated(reqData);
+      console.log(reqData,":::::")
 
     if (response?.status === 200) {
       toastMessage(response?.data?.message, "success");

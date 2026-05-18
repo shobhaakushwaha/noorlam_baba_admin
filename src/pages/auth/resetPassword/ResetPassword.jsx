@@ -142,7 +142,7 @@ const ResetPassword = () => {
                   value={otp}
                   inputType="number"
                   onChange={setOtp}
-                  numInputs={4}
+                  numInputs={6}
                   renderInput={(props) => <input {...props} />}
                 />
               </div>
