@@ -3,13 +3,15 @@ import {
   setJwtToken,
   setMultiPartHeader,
 } from "../../config/axiosInstance";
+import { dedupeRequest } from "../../utils/requestDedupe";
 
 // User List
 
 export const getCategoryListApi = async (data) => {
-  const endPoint = `/api/v1/admin/category/list?${new URLSearchParams(data)}`;
+  const queryString = new URLSearchParams(data).toString();
+  const endPoint = `/api/v1/admin/category/list?${queryString}`;
 
-  return await axios.get(endPoint, setJwtToken());
+  return await dedupeRequest(endPoint, () => axios.get(endPoint, setJwtToken()));
 };
 
 // -------------------dleelt cat
@@ -50,4 +52,3 @@ export const  profileUpdated = async(data)=>{
 export const  profileDetailsData = async()=>{
     return await axios.get("/api/v1/admin/account/profile",setJwtToken());
 }
-

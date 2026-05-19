@@ -5,13 +5,15 @@ import {
   setJwtToken,
   setMultiPartHeader,
 } from "../../config/axiosInstance";
+import { dedupeRequest } from "../../utils/requestDedupe";
 
 // User List
 
 export const getSubcategoryListApi = async (data) => {
-  const endPoint = `/api/v1/admin/subcategory/list?${new URLSearchParams(data)}`;
+  const queryString = new URLSearchParams(data).toString();
+  const endPoint = `/api/v1/admin/subcategory/list?${queryString}`;
 
-  return await axios.get(endPoint, setJwtToken());
+  return await dedupeRequest(endPoint, () => axios.get(endPoint, setJwtToken()));
 };
 
 export const editSubcategoryApi = async (data) => {
