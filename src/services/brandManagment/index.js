@@ -33,7 +33,7 @@ export const changeStatusAPI = async (data) => {
 
 // -------------------dleelt cat
 
-export const deleteBrandApi = async ({ id }) => {
+export const deleteBrandApi = async ( id ) => {
   const endPoint = `/api/v1/admin/brand/delete/${id}`;
 
   return await axios.delete(endPoint, setJwtToken());

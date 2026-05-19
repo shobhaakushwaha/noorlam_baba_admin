@@ -94,6 +94,7 @@ const BrandManagement = () => {
     if (!detailsData?._id) return;
     onShow();
     try {
+         console.log(detailsData._id," kk")
       const { data } = await deleteBrandApi(detailsData._id);
 
       if (data?.status === 200) {
@@ -205,14 +206,14 @@ const BrandManagement = () => {
                     className="text-center"
                     style={{ cursor: "pointer" }}
                     onClick={() => {
-                      setSelectedDescription(data?.description);
+                      setSelectedDescription(data?.name);
                       setDescriptionModal(true);
                     }}
                   >
                     {data?.description?.length > 10 ? (
-                      <>{data?.description?.slice(0, 15)}... Read more</>
+                      <>{data?.name?.slice(0, 15)}... Read more</>
                     ) : (
-                      data?.description
+                      data?.name
                     )}
                   </td>
                   {/* <td className="text-center">{data?.type} </td>
