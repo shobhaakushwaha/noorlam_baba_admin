@@ -14,6 +14,23 @@ export const getBrandListApi = async (data) => {
   return await dedupeRequest(endPoint, () => axios.get(endPoint, setJwtToken()));
 };
 
+export const changeStatusAPI = async (data) => {
+  console.log(data, "changeStatusAPI");
+
+  const endPoint = `/api/v1/admin/brand/change_status`;
+  const payload = new FormData();
+
+  payload.append("brandId", data?.brandId);
+  payload.append("status", String(data?.status));
+
+  return await axios.put(endPoint, payload, {
+    ...setMultiPartHeader(),
+    skipEncryption: true,
+  });
+};
+
+
+
 // -------------------dleelt cat
 
 export const deleteBrandApi = async ({ id }) => {
@@ -24,7 +41,7 @@ export const deleteBrandApi = async ({ id }) => {
 
 // ---------add category
 
-export const addCategoryApi = async (data) => {
+export const addBrandApi = async (data) => {
   const endPoint = `/api/v1/admin/brand/add`;
 
   return await axios.post(endPoint, data, {

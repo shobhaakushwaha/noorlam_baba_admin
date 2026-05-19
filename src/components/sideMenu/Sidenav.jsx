@@ -49,22 +49,29 @@ const sideMenuData = () => {
       name: "Support Management",
       icon: <MdSupportAgent />,
     },
-    {
+        {
       id: 8,
+      enabled: true,
+      path: "/brand-management",
+      name: "Brand Management",
+      icon: <IoDocumentText />,
+    },
+    {
+      id: 9,
       enabled: true,
       path: "/category-management",
       name: "Category Management",
       icon: <HiViewGrid />,
     },
       {
-      id: 9,
+      id: 10,
       enabled: true,
       path: "/subcategory-management",
       name: "SubCategory Management",
       icon: <HiViewGrid />,
     },
     {
-      id: 10,
+      id: 11,
       enabled: true,
       path: "/cms-management",
       name: "CMS Management",
@@ -85,12 +92,19 @@ const sideMenuData = () => {
     //   icon: <IoDocumentText />,
     // },
      {
-      id: 13,
+      id: 12,
       enabled: true,
       path: "/notification-management",
       name: "Notification Management",
       icon: <IoDocumentText />,
     },
+     //    {
+    //   id: 12,
+    //   enabled: true,
+    //   path: "/reports-management",
+    //   name: "Reports Management",
+    //   icon: <IoDocumentText />,
+    // },
 
   
   ].filter((item) => item.enabled);
