@@ -53,3 +53,6 @@ export const deleteSubcategoryApi = async (id) => {
   //faq/delete?faqId
   return await axios.delete(endPoint, setJwtToken());
 };
+
+
+
