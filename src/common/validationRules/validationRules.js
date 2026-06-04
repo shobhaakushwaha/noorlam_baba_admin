@@ -114,6 +114,41 @@ export const schemaValidate = (type) => {
         .union([z.instanceof(File), z.string().url(), z.undefined()])
         .optional(),
     }),
+    addSubSubcategorySchema: z.object({
+      subCategoryId: z.string().nonempty("Sub Category is required"),
+
+      playListName: z
+        .string()
+        .nonempty("Name is required")
+        .min(2, "Name is too short")
+        .max(50, "Name too long"),
+
+      image: z
+        .any()
+        .refine((file) => file instanceof File, {
+          message: "Image is required",
+        })
+        .refine((file) => !file || file.size <= 6 * 1024 * 1024, {
+          message: "Image must be less than 6MB",
+        })
+        .refine(
+          (file) =>
+            !file ||
+            ["image/jpeg", "image/png", "image/webp"].includes(file.type),
+          {
+            message: "Invalid image type",
+          }
+        ),
+    }),
+    editSubSubcategorySchema: z.object({
+      subCategoryId: z.string().nonempty("Sub Category is required"),
+
+      playListName: z.string().nonempty("Name is required").min(2).max(50),
+
+      image: z
+        .union([z.instanceof(File), z.string().url(), z.undefined()])
+        .optional(),
+    }),
     // ----------------------------change pass
     changePass: z
       .object({

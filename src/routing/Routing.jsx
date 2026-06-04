@@ -24,6 +24,7 @@ import BannerManagement from "pages/bannermanagement/BannerManagement";
 import ContentManagement from "pages/contentmanagement/ContentManagement";
 import ProfileUpdate from "pages/profile-update/profile-update";
 import SubcategoryManagement from "pages/subcategorymanagment/subcategoryManagement";
+import SubSubcategoryManagement from "pages/subsubcategorymanagment/subSubcategoryManagement";
 import BrandManagement from "pages/brandmanagement/BrandManagement";
 
 
@@ -159,6 +160,12 @@ const Routing = () => {
       id: 21,
       name: "/brand-management",
       elements: <BrandManagement />,
+      isActive: true,
+    },
+    {
+      id: 22,
+      name: "/sub-subcategory-management",
+      elements: <SubSubcategoryManagement />,
       isActive: true,
     },
   ].filter((check) => check?.isActive);

@@ -12,8 +12,11 @@ import {
 } from "services/CategoryManagement";
 import {
   addSubcategoryApi,
-  
+  getSubcategoryListApi,
 } from "services/subcategoryManagment";
+import {
+  addSubSubcategoryApi,
+} from "services/subSubcategoryManagment";
 import { firstWordCapital } from "utils/common";
 import { toastMessage } from "utils/toastMessage";
 
@@ -27,7 +30,12 @@ const AddCategory = ({
   catDetails = {},
 }) => {
   const isSubcategory = catTabName === "sub category";
-  const validationSchema = isSubcategory
+  const isSubSubcategory = catTabName === "sub sub category";
+  const validationSchema = isSubSubcategory
+    ? isEdit
+      ? "editSubSubcategorySchema"
+      : "addSubSubcategorySchema"
+    : isSubcategory
     ? isEdit
       ? "editSubcategorySchema"
       : "addSubcategorySchema"
@@ -56,6 +64,7 @@ const AddCategory = ({
 
   const [imgForPreview, setImgForPreview] = useState("");
   const [categoryOptions, setCategoryOptions] = useState([]);
+  const [subcategoryOptions, setSubcategoryOptions] = useState([]);
 
   // -------------------------------------submit
   const doSubmit = async (dataInp) => {
@@ -65,6 +74,8 @@ const AddCategory = ({
 
     if (isSubcategory) {
       formData.append("categoryId", dataInp?.categoryId);
+    } else if (isSubSubcategory) {
+      formData.append("subCategoryId", dataInp?.subCategoryId);
     } else if (isEdit && catDetails?._id) {
       formData.append("categoryId", catDetails?._id);
     }
@@ -73,14 +84,18 @@ const AddCategory = ({
       formData.append("subcategoryId", catDetails?._id);
     }
 
+    if (isSubSubcategory && isEdit && catDetails?._id) {
+      formData.append("subSubCategoryId", catDetails?._id);
+    }
+
     if (dataInp.image instanceof File) {
       formData.append("image", dataInp?.image);
     }
     try {
       const apiHandler = isSubcategory
-        ? isEdit
-          ? addSubcategoryApi
-          : addSubcategoryApi
+        ? addSubcategoryApi
+        : isSubSubcategory
+        ? addSubSubcategoryApi
         : addCategoryApi;
       const {
         data: { status, message },
@@ -114,6 +129,15 @@ const AddCategory = ({
         catDetails?.categoryId?._id || catDetails?.categoryId || "",
         { shouldValidate: true }
       );
+      setValue(
+        "subCategoryId",
+        catDetails?.subCategoryId?._id ||
+          catDetails?.subcategoryId?._id ||
+          catDetails?.subCategoryId ||
+          catDetails?.subcategoryId ||
+          "",
+        { shouldValidate: true }
+      );
       setImgForPreview(catDetails?.image);
     }
   }, [isEdit, catDetails, setValue]);
@@ -144,6 +168,34 @@ const AddCategory = ({
 
     getCategoryOptions();
   }, [isSubcategory]);
+
+  useEffect(() => {
+    const getSubcategoryOptions = async () => {
+      if (!isSubSubcategory) return;
+
+      try {
+        const { data: responseData } = await getSubcategoryListApi({
+          type: "sub category",
+          page: 1,
+          limit: 1000,
+        });
+
+        if (responseData?.status === 200) {
+          const listData =
+            responseData?.data?.subCategoryList ||
+            responseData?.data?.subcategoryList ||
+            responseData?.data?.data ||
+            [];
+
+          setSubcategoryOptions(listData);
+        }
+      } catch (error) {
+        console.log("subcategory list error:-->", error);
+      }
+    };
+
+    getSubcategoryOptions();
+  }, [isSubSubcategory]);
 
   return (
     <CustomModal
@@ -181,6 +233,29 @@ const AddCategory = ({
             {errors?.categoryId && (
               <div className="validation_err">
                 <p>{errors?.categoryId?.message}</p>
+              </div>
+            )}
+          </div>
+        )}
+        {isSubSubcategory && (
+          <div className="form_field">
+            <Select
+              label="Sub Category"
+              required
+              {...register("subCategoryId")}
+              error={errors?.subCategoryId?.message}
+            >
+              <option value="">Select Sub Category</option>
+              {subcategoryOptions.map((subcategory) => (
+                <option key={subcategory?._id} value={subcategory?._id}>
+                  {subcategory?.name}
+                </option>
+              ))}
+            </Select>
+
+            {errors?.subCategoryId && (
+              <div className="validation_err">
+                <p>{errors?.subCategoryId?.message}</p>
               </div>
             )}
           </div>
