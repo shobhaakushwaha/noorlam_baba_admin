@@ -16,11 +16,14 @@ export const getSubcategoryListApi = async (data) => {
   return await dedupeRequest(endPoint, () => axios.get(endPoint, setJwtToken()));
 };
 
-export const editSubcategoryApi = async (data) => {
-  const endPoint = `/api/v1/admin/subcategory/add`;
+// export const editSubcategoryApi = async (data) => {
+//   const endPoint = `/api/v1/admin/subcategory/add`;
 
-  return await axios.put(endPoint, data, setJwtToken());
-};
+//   return await axios.put(endPoint, data, {
+//     ...setMultiPartHeader(),
+//     skipEncryption: true,
+//   });
+// };
 
 export const addSubcategoryApi = async (data) => {
   console.log(data, " update ");
@@ -53,6 +56,5 @@ export const deleteSubcategoryApi = async (id) => {
   //faq/delete?faqId
   return await axios.delete(endPoint, setJwtToken());
 };
-
 
 
